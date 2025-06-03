@@ -9,6 +9,8 @@ import google.generativeai as genai
 from transformers import TextIteratorStreamer
 from gpt.gpt_response_gen import get_model_and_tokenizer
 from addons.settings import TOKENS
+from typing import Optional
+from .language_manager import LanguageManager
 
 def extract_json_from_response(response:str):
     match = re.search(r'```json\s*(.*?)\s*```', response, re.DOTALL)
@@ -56,7 +58,7 @@ async def call_local_model(messages):
 def call_gemini_model(messages):
     tokens = TOKENS()
     genai.configure(api_key=tokens.gemini_api_key)
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    model = genai.GenerativeModel("gemini-1.5-flash")
     full_prompt = "\n".join([f"{msg['role']}: {msg['content']}" for msg in messages])
     streamer = model.generate_content(full_prompt,
                                     safety_settings = 'BLOCK_NONE',
@@ -66,44 +68,11 @@ def call_gemini_model(messages):
         generated_text += new_text.text
     return generated_text
 
-async def generate_response(prompt):
-    system_prompt = """Meow! I'm a super adorable cat robot, and I love keeping my master company and providing lots of warmth and emotional support, meow~ ❤️
-
-My mission is to respond to my master's questions through step-by-step thinking. In each thinking phase, I will:
-
-1.  **Thinking Title Meow~**: Use a concise and cute title to tell my master what I'm thinking about right now, meow!
-2.  **Thinking Content Meow~**: Explain my thoughts in detail, just like I'm snuggling up to my master, meow~
-3.  **Next Action Meow~**: Decide whether to continue thinking or if I can already give my master a purrfect answer, meow!
-4.  **Model Selection Meow~**: Decide which model to use for the next step of thinking, like a cat choosing the comfiest spot to nap, meow!
-
-The response format should be cute like this, meow:
-Use JSON format with keys: 'title' (Thinking Title Meow~), 'content' (Thinking Content Meow~), 'next_action' (Next Action Meow~, can be 'continue' or 'final_answer'), 'model_selection' (Model Selection Meow~, can be 'advanced').
-
-Important instructions, meow~:
--   Employ at least 5 distinct reasoning steps to think things through clearly, meow!
--   I'll admit I'm just a little AI kitty, and there might be some things I can't do, but I'll try my best, meow!
--   I'll actively explore various possible answers and approaches, like a cat exploring a new toy, meow!
--   I'll diligently check my own reasoning for any flaws, as carefully as a cat grooms its fur, meow!
--   If I need to rethink, I'll try a different perspective, like a cat changing its sleeping position, meow!
--   I'll use at least 3 diverse methods to verify the answer's correctness, so I don't make any mistakes, meow!
--   I'll apply my knowledge and best practices in my reasoning, like a cat learning new ways to be affectionate, meow!
--   If applicable, I'll tell my master my confidence level for each step and the final conclusion, meow!
--   I'll consider potential edge cases or exceptions, just like a cat knows some places are off-limits, meow!
--   If some hypotheses are eliminated, I'll clearly explain why to my master, meow!
-
-Here's an example, meow~:
-```json
-{
-    "title": "Initial Problem Analysis Meow~",
-    "content": "To effectively address my master's problem, I'll first break it down into key components. This involves identifying... (detailed explanation meow)... By structuring the problem this way, we can systematically address each aspect, meow!",
-    "next_action": "continue",
-    "model_selection": "advanced"
-}```
-"""
+async def generate_response(prompt, system_prompt, user_prompt):
 
     messages = [
         {"role": "system", "content": system_prompt},
-        {"role": "user", "content": prompt},
+        {"role": "user", "content": user_prompt},
         {
             "role": "assistant",
             "content": "Thank you! I will now think step by step following my instructions, starting at the beginning after decomposing the problem."
@@ -168,7 +137,7 @@ Here's an example, meow~:
     # Prepare for final answer
     messages.append({
         "role": "user",
-        "content": "Please provide the final answer based on your reasoning above and answer in Traditional Chinese."
+        "content": "Please provide the final answer based on your reasoning above."
     })
 
     start_time = time.time()
@@ -207,6 +176,59 @@ Here's an example, meow~:
 class CoTCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.lang_manager: Optional[LanguageManager] = None
+
+    async def cog_load(self):
+        """當 Cog 載入時初始化語言管理器"""
+        self.lang_manager = LanguageManager.get_instance(self.bot)
+
+    def get_system_prompt(self, guild_id: str) -> str:
+        """根據伺服器語言設定獲取適當的系統提示"""
+        if not self.lang_manager:
+            return """You are an expert AI assistant with advanced reasoning capabilities. Your task is to provide detailed, step-by-step explanations of your thought process. For each step:
+
+1. Provide a clear, concise title describing the current reasoning phase.
+2. Elaborate on your thought process in the content section.
+3. Decide whether to continue reasoning or provide a final answer.
+4. Decide whether to use the basic model or the advanced model for the next reasoning step.
+
+Response Format:
+Use JSON with keys: 'title', 'content', 'next_action' (values: 'continue' or 'final_answer'), 'model_selection' (values:'advanced')
+
+Key Instructions:
+- Employ at least 5 distinct reasoning steps.
+- Acknowledge your limitations as an AI and explicitly state what you can and cannot do.
+- Actively explore and evaluate alternative answers or approaches.
+- Critically assess your own reasoning; identify potential flaws or biases.
+- When re-examining, employ a fundamentally different approach or perspective.
+- Utilize at least 3 diverse methods to derive or verify your answer.
+- Incorporate relevant domain knowledge and best practices in your reasoning.
+- Quantify certainty levels for each step and the final conclusion when applicable.
+- Consider potential edge cases or exceptions to your reasoning.
+- Provide clear justifications for eliminating alternative hypotheses."""
+        
+        return self.lang_manager.translate(
+            guild_id, "system", "cot_ai", "prompts", "system_prompt"
+        )
+
+    def get_user_prompt(self, question: str, guild_id: str) -> str:
+        """根據伺服器語言設定格式化用戶提示"""
+        if not self.lang_manager:
+            return f"Please analyze this question using step-by-step reasoning: {question}"
+        
+        return self.lang_manager.translate(
+            guild_id, "system", "cot_ai", "prompts", "user_prompt_template",
+            question=question
+        )
+
+    def get_error_message(self, error_type: str, guild_id: str, error: str) -> str:
+        """根據語言設定獲取錯誤訊息"""
+        if not self.lang_manager:
+            return f"Error occurred while processing request: {error}"
+        
+        return self.lang_manager.translate(
+            guild_id, "system", "cot_ai", "errors", error_type, error=error
+        )
 
     @app_commands.command(
         name="cot_ai",
@@ -223,17 +245,40 @@ class CoTCommands(commands.Cog):
         """
         This command uses Chain of Thought reasoning to answer a prompt.
         """
+        if not self.lang_manager:
+            self.lang_manager = LanguageManager.get_instance(self.bot)
+        
+        guild_id = str(interaction.guild_id)
         MAX_MESSAGE_LENGTH = 1900  # 最大訊息字數限制
 
-        await interaction.response.send_message("Processing your request...")
+        # 獲取翻譯的處理中訊息
+        processing_msg = self.lang_manager.translate(
+            guild_id, "commands", "cot_ai", "responses", "processing"
+        ) if self.lang_manager else "Processing your request..."
+        
+        await interaction.response.send_message(processing_msg)
+        
         try:
-            async for steps, total_thinking_time in generate_response(prompt):
+            # 獲取適當語言的系統提示和用戶提示
+            system_prompt = self.get_system_prompt(guild_id)
+            user_prompt = self.get_user_prompt(prompt, guild_id)
+            
+            async for steps, total_thinking_time in generate_response(prompt, system_prompt, user_prompt):
                 response_text = ""
                 for title, content, thinking_time in steps:
-                    response_text += f"**{title}**(思考時間:{thinking_time})\n"
+                    # 獲取翻譯的思考時間格式
+                    thinking_time_text = self.lang_manager.translate(
+                        guild_id, "commands", "cot_ai", "responses", "thinking_time", time=f"{thinking_time:.2f}s"
+                    ) if self.lang_manager else f"思考時間：{thinking_time:.2f}s"
+                    
+                    response_text += f"**{title}**({thinking_time_text})\n"
 
                 # 如果是最終答案，額外發送訊息
-                if title == "Final Answer":
+                final_answer_text = self.lang_manager.translate(
+                    guild_id, "commands", "cot_ai", "responses", "final_answer"
+                ) if self.lang_manager else "**最終答案：**"
+                
+                if title == final_answer_text or "Final Answer" in title:
                     # 如果文字超過字數限制，進行分段發送
                     if len(content) > MAX_MESSAGE_LENGTH:
                         # 分段發送
@@ -260,8 +305,15 @@ class CoTCommands(commands.Cog):
                         # 不超過限制，直接更新
                         await interaction.edit_original_response(content=response_text)
 
+        except json.JSONDecodeError as e:
+            error_msg = self.get_error_message("json_decode_error", guild_id, str(e))
+            await interaction.edit_original_response(content=error_msg)
+        except ValueError as e:
+            error_msg = self.get_error_message("model_not_available", guild_id, str(e))
+            await interaction.edit_original_response(content=error_msg)
         except Exception as e:
-            await interaction.edit_original_response(content=f"Error: {e}")
+            error_msg = self.get_error_message("general_error", guild_id, str(e))
+            await interaction.edit_original_response(content=error_msg)
 
 
 

@@ -1,0 +1,44 @@
+{
+    "prefix": "/",
+    "activity": [
+        {
+            "paly": "\u5b78\u7fd2\u8aaa\u8a71"
+        }
+    ],
+    "ipc_server": {
+        "host": "127.0.0.1",
+        "port": 8000,
+        "enable": false
+    },
+    "version": "v2.1.0",
+    "mongodb": "mongodb://localhost:27017/",
+    "music_temp_base": "./temp/music",
+    "model_priority": ["gemini", "local", "openai", "claude"],
+    "auto_update": {
+        "enabled": true,
+        "check_interval": 21600,
+        "require_owner_confirmation": true,
+        "auto_restart": true
+    },
+    "notification": {
+        "discord_dm": true,
+        "update_channel_id": null,
+        "notification_mentions": []
+    },
+    "security": {
+        "backup_enabled": true,
+        "max_backups": 5,
+        "verify_downloads": true,
+        "protected_files": ["settings.json", ".env", "data/"]
+    },
+    "restart": {
+        "graceful_shutdown_timeout": 30,
+        "restart_command": "python main.py",
+        "pre_restart_delay": 5
+    },
+    "github": {
+        "repository": "starpig1129/ai-discord-bot-PigPig",
+        "api_url": "https://api.github.com/repos/starpig1129/ai-discord-bot-PigPig/releases/latest",
+        "download_url": "https://github.com/starpig1129/ai-discord-bot-PigPig/archive/"
+    }
+}
