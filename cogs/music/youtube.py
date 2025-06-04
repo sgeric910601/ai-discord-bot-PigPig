@@ -230,7 +230,7 @@ class YouTubeManager:
                 'no_warnings': False,
                 'extract_flat': False,
                 'force_generic_extractor': False,
-                'ffmpeg_location': 'C:/Program Files/FFmpeg/bin/ffmpeg.exe',
+                'ffmpeg_location': '/usr/bin/ffmpeg',
                 'postprocessor_args': [
                     '-threads', '2',  # 降低執行緒數量以避免過載
                     '-loglevel', 'warning',

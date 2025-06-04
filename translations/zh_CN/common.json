@@ -258,6 +258,233 @@
                 "success": "已将频道 {channel} 自动回复设定为：{enabled}"
             }
         },
+        "system_prompt": {
+            "name": "system_prompt",
+            "description": "管理系统提示设置",
+            "subcommands": {
+                "set": {
+                    "name": "set",
+                    "description": "设置系统提示",
+                    "options": {
+                        "type": "设置类型（频道特定或服务器默认）",
+                        "channel": "目标频道（设置频道特定时使用）",
+                        "content": "系统提示内容（选填，留空将打开编辑器）"
+                    },
+                    "choices": {
+                        "channel": "频道特定",
+                        "server": "服务器默认"
+                    }
+                },
+                "view": {
+                    "name": "view",
+                    "description": "查看系统提示配置",
+                    "options": {
+                        "channel": "目标频道（可选）",
+                        "show_inherited": "显示继承的提示"
+                    }
+                },
+                "remove": {
+                    "name": "remove",
+                    "description": "移除系统提示",
+                    "options": {
+                        "type": "移除类型",
+                        "channel": "目标频道（移除频道特定时使用）"
+                    },
+                    "choices": {
+                        "channel": "频道特定",
+                        "server": "服务器默认"
+                    }
+                },
+                "copy": {
+                    "name": "copy",
+                    "description": "复制系统提示到其他频道",
+                    "options": {
+                        "from_channel": "来源频道",
+                        "to_channel": "目标频道"
+                    }
+                },
+                "reset": {
+                    "name": "reset",
+                    "description": "重置系统提示",
+                    "options": {
+                        "type": "重置类型"
+                    },
+                    "choices": {
+                        "channel": "当前频道",
+                        "server": "服务器默认",
+                        "all": "全部重置"
+                    }
+                },
+                "modules": {
+                    "name": "modules",
+                    "description": "查看可用的模块列表"
+                }
+            },
+            "ui": {
+                "modals": {
+                    "system_prompt": {
+                        "title": "设置系统提示",
+                        "title_channel": "设置频道 #{channel} 系统提示",
+                        "title_server": "设置服务器默认系统提示",
+                        "title_edit": "编辑系统提示",
+                        "prompt_label": "系统提示内容",
+                        "prompt_placeholder": "请输入系统提示内容..."
+                    },
+                    "module_prompt": {
+                        "title": "设置模块: {module}",
+                        "prompt_label": "{module} 模块内容",
+                        "prompt_placeholder": "请输入 {module} 模块的内容..."
+                    }
+                },
+                "buttons": {
+                    "confirm": "确认",
+                    "confirm_remove": "确认移除",
+                    "confirm_reset": "确认重置",
+                    "confirm_copy": "确认复制",
+                    "cancel": "取消",
+                    "edit": "编辑",
+                    "preview": "预览"
+                },
+                "selectors": {
+                    "channel_placeholder": "选择频道",
+                    "module_placeholder": "选择要覆盖的模块",
+                    "module_description": "覆盖 {module} 模块"
+                },
+                "embeds": {
+                    "system_prompt_title": "🤖 系统提示设置",
+                    "preview_title": "🔍 系统提示预览",
+                    "modules_title": "📦 可用模块列表"
+                }
+            },
+            "messages": {
+                "success": {
+                    "set": "✅ 系统提示设置成功",
+                    "set_description": "已成功设置{scope}的系统提示",
+                    "remove": "✅ 移除成功",
+                    "remove_description": "已成功移除{scope}的系统提示",
+                    "copy": "✅ 复制成功",
+                    "copy_description": "已成功将 #{from_channel} 的系统提示复制到 #{to_channel}",
+                    "reset": "✅ 重置成功",
+                    "reset_description": "已成功重置{scope}系统提示设置",
+                    "operation_confirmed": "✅ 操作已确认",
+                    "operation_cancelled": "❌ 操作已取消"
+                },
+                "info": {
+                    "scope_channel": "频道 #{channel}",
+                    "scope_server": "服务器默认",
+                    "scope_all": "所有",
+                    "content_length": "内容长度",
+                    "created_by": "设置者",
+                    "source": "来源",
+                    "source_yaml": "YAML 基础提示",
+                    "source_server": "服务器默认 + YAML",
+                    "source_channel": "频道特定 + 服务器默认 + YAML",
+                    "source_cache": "缓存",
+                    "prompt_length": "{length} 字符",
+                    "language": "语言",
+                    "channel": "频道",
+                    "inheritance_title": "继承层级",
+                    "inheritance_yaml": "🔹 YAML 基础提示",
+                    "inheritance_server": "🔸 服务器默认提示",
+                    "inheritance_channel": "🔸 频道特定提示",
+                    "inheritance_none": "仅 YAML 基础",
+                    "modules_description": "以下是可以覆盖的 YAML 系统提示模块：",
+                    "modules_usage": "在设置系统提示时，可以使用模块覆盖功能来自定义特定模块的内容",
+                    "modules_none": "暂无可用模块",
+                    "preview_content": "内容",
+                    "preview_source": "来源",
+                    "preview_length": "长度"
+                },
+                "confirm": {
+                    "remove_channel": "确定要移除频道 #{channel} 的系统提示吗？",
+                    "remove_server": "确定要移除服务器默认系统提示吗？",
+                    "reset_channel": "确定要重置频道 #{channel} 的系统提示吗？",
+                    "reset_server": "确定要重置服务器默认系统提示吗？",
+                    "reset_all": "确定要重置所有系统提示设置吗？\n⚠️ 此操作无法恢复！",
+                    "copy_simple": "复制 #{from_channel} 的系统提示到 #{to_channel}",
+                    "copy_overwrite": "复制 #{from_channel} 的系统提示到 #{to_channel}\n⚠️ 目标频道已有系统提示，将会被覆盖",
+                    "title_remove": "⚠️ 确认移除",
+                    "title_reset": "⚠️ 确认重置",
+                    "title_copy": "🔄 确认复制"
+                },
+                "validation": {
+                    "prompt_empty": "❌ 系统提示内容不能为空",
+                    "prompt_too_long": "❌ 系统提示过长（最大 4000 字符），当前 {length} 字符",
+                    "same_channel": "❌ 来源频道和目标频道不能相同",
+                    "module_empty": "❌ {module} 模块内容不能为空"
+                }
+            },
+            "errors": {
+                "permission_denied": "您没有权限执行此操作",
+                "channel_permission_denied": "您没有权限管理此频道的系统提示",
+                "server_permission_denied": "您没有权限管理服务器级别的系统提示",
+                "prompt_not_found": "未找到系统提示",
+                "channel_not_found": "找不到指定的频道",
+                "validation_failed": "验证失败：{error}",
+                "operation_failed": "操作失败：{error}",
+                "system_error": "系统错误，请稍后再试",
+                "timeout": "操作超时，请重试",
+                "modal_error": "处理请求时发生错误: {error}",
+                "unknown_error": "发生未知错误，请稍后再试",
+                "modules_unavailable": "无法获取模块列表: {error}"
+            },
+            "modules": {
+                "descriptions": {
+                    "base": "定义 AI 的基本身份和核心指令，包括机器人名称、创建者信息等基础设定",
+                    "personality": "设定 AI 的个性特征和表达风格，包括幽默感、礼貌程度、语言风格等",
+                    "answering_principles": "规定 AI 回答问题的基本原则，如优先级处理、信息来源标注等",
+                    "language": "设定 AI 的语言偏好和表达方式，包括主要语言、风格元素、回应长度等",
+                    "professionalism": "定义 AI 在专业话题上的表现标准，平衡幽默性与专业性",
+                    "interaction": "设定 AI 的互动模式，包括对话风格、专注度管理等",
+                    "formatting": "规定 Discord 环境下的格式化规则，包括 Markdown 语法、提及格式等",
+                    "professional_personality": "整合专业性与个性化设定，创造既专业又有个性的 AI 表现方式"
+                },
+                "select_descriptions": {
+                    "base": "基本身份和核心指令",
+                    "personality": "个性特征和表达风格",
+                    "answering_principles": "回答问题的基本原则",
+                    "language": "语言偏好和表达方式",
+                    "professionalism": "专业话题的表现标准",
+                    "interaction": "互动模式和对话风格",
+                    "formatting": "Discord 格式化规则",
+                    "professional_personality": "专业个性化设定"
+                },
+                "modules_select_descriptions": {
+                    "base": "基本身份和核心指令",
+                    "personality": "个性特征和表达风格",
+                    "answering_principles": "回答问题的基本原则",
+                    "language": "语言偏好和表达方式",
+                    "professionalism": "专业话题的表现标准",
+                    "interaction": "互动模式和对话风格",
+                    "formatting": "Discord 格式化规则",
+                    "professional_personality": "专业个性化设定"
+                },
+                "help": {
+                    "title": "📦 模块说明",
+                    "description": "以下模块可以单独编辑来自定义 AI 的行为：",
+                    "usage_tip": "💡 提示：编辑模块时会显示默认内容作为参考",
+                    "inheritance_note": "⚠️ 注意：模块编辑会覆盖对应的 YAML 模块内容"
+                }
+            },
+            "user_experience": {
+                "default_content": {
+                    "loaded": "✅ 已载入默认内容作为编辑基础",
+                    "loading_failed": "⚠️ 载入默认内容失败，将从空白开始",
+                    "effective_prompt_loaded": "📝 已载入当前有效的完整系统提示",
+                    "module_default_loaded": "📦 已载入 {module} 模块的默认内容"
+                },
+                "editing": {
+                    "based_on_current": "基于当前有效的系统提示进行编辑...",
+                    "based_on_default": "基于 {module} 模块的默认内容进行编辑...",
+                    "from_scratch": "请输入新的内容..."
+                },
+                "guidance": {
+                    "first_time_edit": "🎯 首次编辑提示：您可以基于默认内容进行修改",
+                    "module_explanation": "💭 此模块负责：{description}",
+                    "inheritance_info": "🔗 此设定将影响：{scope}"
+                }
+            }
+        },
         "search_gif": {
             "name": "search_gif",
             "description": "搜索 GIF",

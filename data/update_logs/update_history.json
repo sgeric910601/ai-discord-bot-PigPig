@@ -1,0 +1,130 @@
+[
+  {
+    "timestamp": "2025-06-05T00:53:14.528061",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "failed",
+    "details": {},
+    "error_message": "備份創建失敗: [('data/backups\\\\backup_20250605_005315\\\\data\\\\backups\\\\backup_20250605_005315\\\\data\\\\backups\\\\backup_20250605_005315\\\\data\\\\backups\\\\backup_20250605_005315\\\\data\\\\backups\\\\backup_20250605_005315', 'data/backups\\\\backup_20250605_005315\\\\data/backups\\\\backup_20250605_005315\\\\data\\\\backups\\\\backup_20250605_005315\\\\data\\\\backups\\\\backup_20250605_005315\\\\data\\\\backups\\\\backup_20250605_005315\\\\data\\\\backups\\\\backup_20250605_005315', \"[WinError 3] 系統找不到指定的路徑。: 'data/backups\\\\\\\\backup_20250605_005315\\\\\\\\data/backups\\\\\\\\backup_20250605_005315\\\\\\\\data\\\\\\\\backups\\\\\\\\backup_20250605_005315\\\\\\\\data\\\\\\\\backups\\\\\\\\backup_20250605_005315\\\\\\\\data\\\\\\\\backups\\\\\\\\backup_20250605_005315\\\\\\\\data\\\\\\\\backups\\\\\\\\backup_20250605_005315'\")]",
+    "old_version": "v2.1.1",
+    "new_version": "v2.2.0"
+  },
+  {
+    "timestamp": "2025-06-05T01:15:47.481627",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "failed",
+    "details": {
+      "backup_id": "backup_20250605_011548"
+    },
+    "error_message": "下載失敗：HTTP 404",
+    "old_version": "v2.1.1",
+    "new_version": "v2.2.0"
+  },
+  {
+    "timestamp": "2025-06-05T01:23:57.545053",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "success",
+    "details": {
+      "backup_id": "backup_20250605_012358"
+    },
+    "error_message": null,
+    "old_version": "v2.1.1",
+    "new_version": "v2.2.0"
+  },
+  {
+    "timestamp": "2025-06-05T01:32:10.140077",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "success",
+    "details": {
+      "backup_id": "backup_20250605_013211"
+    },
+    "error_message": null,
+    "old_version": "v2.2.0",
+    "new_version": "v2.2.1"
+  },
+  {
+    "timestamp": "2025-06-05T01:40:06.350577",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "success",
+    "details": {
+      "backup_id": "backup_20250605_014007"
+    },
+    "error_message": null,
+    "old_version": "v2.2.0",
+    "new_version": "v2.2.1"
+  },
+  {
+    "timestamp": "2025-06-05T01:55:32.113171",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "success",
+    "details": {
+      "backup_id": "backup_20250605_015533"
+    },
+    "error_message": null,
+    "old_version": "v2.2.0",
+    "new_version": "v2.2.2"
+  },
+  {
+    "timestamp": "2025-06-05T01:57:42.378967",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "success",
+    "details": {
+      "backup_id": "backup_20250605_015743"
+    },
+    "error_message": null,
+    "old_version": "v2.2.1",
+    "new_version": "v2.2.2"
+  },
+  {
+    "timestamp": "2025-06-05T02:09:32.171480",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "success",
+    "details": {
+      "backup_id": "backup_20250605_020933"
+    },
+    "error_message": null,
+    "old_version": "v2.2.2",
+    "new_version": "v2.2.3"
+  },
+  {
+    "timestamp": "2025-06-05T02:18:53.674602",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "success",
+    "details": {
+      "backup_id": "backup_20250605_021854"
+    },
+    "error_message": null,
+    "old_version": "v2.2.3",
+    "new_version": "v2.2.4"
+  },
+  {
+    "timestamp": "2025-06-05T02:23:33.650419",
+    "event_type": "update_start",
+    "trigger_type": "discord_command",
+    "user_id": 551019857584586772,
+    "status": "success",
+    "details": {
+      "backup_id": "backup_20250605_022334"
+    },
+    "error_message": null,
+    "old_version": "v2.2.3",
+    "new_version": "v2.2.5"
+  }
+]

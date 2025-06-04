@@ -258,6 +258,220 @@
                 "success": "已將頻道 {channel} 自動回覆設定為：{enabled}"
             }
         },
+        "system_prompt": {
+            "name": "system_prompt",
+            "description": "系統提示管理 - 統一管理介面",
+            "ui": {
+                "main_menu": {
+                    "title": "🤖 系統提示管理",
+                    "description": "歡迎使用統一系統提示管理介面！請選擇要執行的功能：",
+                    "main_functions_title": "🔧 主要功能",
+                    "main_functions_description": "• **設定提示** - 設定頻道或伺服器系統提示\n• **查看配置** - 查看當前系統提示配置\n• **模組編輯** - 編輯特定 YAML 模組\n• **複製提示** - 複製系統提示到其他頻道\n• **移除提示** - 移除已設定的系統提示\n• **重置設定** - 重置系統提示配置",
+                    "usage_title": "📋 使用說明",
+                    "usage_description": "點擊下方按鈕來執行對應功能。\n系統支援三層繼承機制：YAML 基礎 → 伺服器預設 → 頻道特定",
+                    "footer": "提示：所有操作都會進行權限檢查，確保安全性"
+                },
+                "buttons": {
+                    "set_prompt": "設定提示",
+                    "view_config": "查看配置",
+                    "module_edit": "模組編輯",
+                    "copy_prompt": "複製提示",
+                    "remove_prompt": "移除提示",
+                    "reset_config": "重置設定",
+                    "back_to_main": "返回主選單",
+                    "channel_specific": "頻道特定",
+                    "server_default": "伺服器預設",
+                    "channel_module": "頻道模組",
+                    "server_module": "伺服器模組",
+                    "current_channel": "當前頻道",
+                    "show_inheritance": "顯示繼承",
+                    "remove_channel_prompt": "移除頻道提示",
+                    "remove_server_prompt": "移除伺服器提示",
+                    "reset_current_channel": "重置當前頻道",
+                    "reset_server_default": "重置伺服器預設",
+                    "reset_all_settings": "重置全部設定",
+                    "execute_copy": "執行複製",
+                    "confirm": "確認",
+                    "confirm_remove": "確認移除",
+                    "confirm_reset": "確認重置",
+                    "confirm_copy": "確認複製",
+                    "cancel": "取消",
+                    "edit": "編輯",
+                    "preview": "預覽"
+                },
+                "menus": {
+                    "set_prompt_title": "⚙️ 設定系統提示",
+                    "set_prompt_description": "請選擇要設定的範圍",
+                    "view_options_title": "👁️ 查看系統提示配置",
+                    "view_options_description": "請選擇查看選項",
+                    "module_edit_title": "📦 模組化編輯",
+                    "module_edit_description": "請選擇要編輯的模組和範圍",
+                    "module_scope_title": "📦 編輯{scope}模組",
+                    "module_scope_description": "請選擇要編輯的模組",
+                    "copy_prompt_title": "📋 複製系統提示",
+                    "copy_prompt_description": "請選擇來源和目標頻道",
+                    "remove_prompt_title": "🗑️ 移除系統提示",
+                    "remove_prompt_description": "請選擇要移除的範圍",
+                    "reset_config_title": "🔄 重置系統提示",
+                    "reset_config_description": "請選擇要重置的範圍"
+                },
+                "modals": {
+                    "system_prompt": {
+                        "title": "設定系統提示",
+                        "title_channel": "設定頻道 #{channel} 系統提示",
+                        "title_server": "設定伺服器預設系統提示",
+                        "title_edit": "編輯系統提示",
+                        "prompt_label": "系統提示內容",
+                        "prompt_placeholder": "請輸入系統提示內容..."
+                    },
+                    "module_prompt": {
+                        "title": "設定模組: {module}",
+                        "prompt_label": "{module} 模組內容",
+                        "prompt_placeholder": "請輸入 {module} 模組的內容..."
+                    }
+                },
+                "selectors": {
+                    "channel_placeholder": "選擇頻道",
+                    "from_channel_placeholder": "選擇來源頻道",
+                    "to_channel_placeholder": "選擇目標頻道",
+                    "module_placeholder": "選擇要編輯的模組",
+                    "module_description": "編輯 {module} 模組"
+                },
+                "embeds": {
+                    "system_prompt_title": "🤖 系統提示設定",
+                    "preview_title": "🔍 系統提示預覽",
+                    "modules_title": "📦 可用模組列表"
+                }
+            },
+            "messages": {
+                "success": {
+                    "set": "✅ 系統提示設定成功",
+                    "set_description": "已成功設定{scope}的系統提示",
+                    "remove": "✅ 移除成功",
+                    "remove_description": "已成功移除{scope}的系統提示",
+                    "copy": "✅ 複製成功",
+                    "copy_description": "已成功將 #{from_channel} 的系統提示複製到 #{to_channel}",
+                    "reset": "✅ 重置成功",
+                    "reset_description": "已成功重置{scope}系統提示設定",
+                    "operation_confirmed": "✅ 操作已確認",
+                    "operation_cancelled": "❌ 操作已取消"
+                },
+                "info": {
+                    "scope_channel": "頻道 #{channel}",
+                    "scope_server": "伺服器預設",
+                    "scope_all": "所有",
+                    "content_length": "內容長度",
+                    "created_by": "設定者",
+                    "source": "來源",
+                    "source_yaml": "YAML 基礎提示",
+                    "source_server": "伺服器預設 + YAML",
+                    "source_channel": "頻道特定 + 伺服器預設 + YAML",
+                    "source_cache": "快取",
+                    "prompt_length": "{length} 字元",
+                    "language": "語言",
+                    "channel": "頻道",
+                    "inheritance_title": "繼承層級",
+                    "inheritance_yaml": "🔹 YAML 基礎提示",
+                    "inheritance_server": "🔸 伺服器預設提示",
+                    "inheritance_channel": "🔸 頻道特定提示",
+                    "inheritance_none": "僅 YAML 基礎",
+                    "modules_description": "以下是可以覆蓋的 YAML 系統提示模組：",
+                    "modules_usage": "在設定系統提示時，可以使用模組覆蓋功能來自訂特定模組的內容",
+                    "modules_none": "暫無可用模組",
+                    "preview_content": "內容",
+                    "preview_source": "來源",
+                    "preview_length": "長度"
+                },
+                "confirm": {
+                    "remove_channel": "確定要移除頻道 #{channel} 的系統提示嗎？",
+                    "remove_server": "確定要移除伺服器預設系統提示嗎？",
+                    "reset_channel": "確定要重置頻道 #{channel} 的系統提示嗎？",
+                    "reset_server": "確定要重置伺服器預設系統提示嗎？",
+                    "reset_all": "確定要重置所有系統提示設定嗎？\n⚠️ 此操作無法復原！",
+                    "copy_simple": "複製 #{from_channel} 的系統提示到 #{to_channel}",
+                    "copy_overwrite": "複製 #{from_channel} 的系統提示到 #{to_channel}\n⚠️ 目標頻道已有系統提示，將會被覆蓋",
+                    "title_remove": "⚠️ 確認移除",
+                    "title_reset": "⚠️ 確認重置",
+                    "title_copy": "🔄 確認複製"
+                },
+                "validation": {
+                    "prompt_empty": "❌ 系統提示內容不能為空",
+                    "prompt_too_long": "❌ 系統提示過長（最大 4000 字元），當前 {length} 字元",
+                    "same_channel": "❌ 來源頻道和目標頻道不能相同",
+                    "module_empty": "❌ {module} 模組內容不能為空"
+                }
+            },
+            "errors": {
+                "permission_denied": "您沒有權限執行此操作",
+                "channel_permission_denied": "您沒有權限管理此頻道的系統提示",
+                "server_permission_denied": "您沒有權限管理伺服器級別的系統提示",
+                "prompt_not_found": "未找到系統提示",
+                "channel_not_found": "找不到指定的頻道",
+                "validation_failed": "驗證失敗：{error}",
+                "operation_failed": "操作失敗：{error}",
+                "system_error": "系統錯誤，請稍後再試",
+                "timeout": "操作超時，請重試",
+                "modal_error": "處理請求時發生錯誤: {error}",
+                "unknown_error": "發生未知錯誤，請稍後再試",
+                "modules_unavailable": "無法取得模組列表: {error}"
+            },
+            "modules": {
+                "descriptions": {
+                    "base": "定義 AI 的基本身份和核心指令，包括機器人名稱、創建者信息等基礎設定",
+                    "personality": "設定 AI 的個性特徵和表達風格，包括幽默感、禮貌程度、語言風格等",
+                    "answering_principles": "規定 AI 回答問題的基本原則，如優先級處理、資訊來源標註等",
+                    "language": "設定 AI 的語言偏好和表達方式，包括主要語言、風格元素、回應長度等",
+                    "professionalism": "定義 AI 在專業話題上的表現標準，平衡幽默性與專業性",
+                    "interaction": "設定 AI 的互動模式，包括對話風格、專注度管理等",
+                    "formatting": "規定 Discord 環境下的格式化規則，包括 Markdown 語法、提及格式等",
+                    "professional_personality": "整合專業性與個性化設定，創造既專業又有個性的 AI 表現方式"
+                },
+                "select_descriptions": {
+                    "base": "基本身份和核心指令",
+                    "personality": "個性特徵和表達風格",
+                    "answering_principles": "回答問題的基本原則",
+                    "language": "語言偏好和表達方式",
+                    "professionalism": "專業話題的表現標準",
+                    "interaction": "互動模式和對話風格",
+                    "formatting": "Discord 格式化規則",
+                    "professional_personality": "專業個性化設定"
+                },
+                "modules_select_descriptions": {
+                    "base": "基本身份和核心指令",
+                    "personality": "個性特徵和表達風格",
+                    "answering_principles": "回答問題的基本原則",
+                    "language": "語言偏好和表達方式",
+                    "professionalism": "專業話題的表現標準",
+                    "interaction": "互動模式和對話風格",
+                    "formatting": "Discord 格式化規則",
+                    "professional_personality": "專業個性化設定"
+                },
+                "help": {
+                    "title": "📦 模組說明",
+                    "description": "以下模組可以個別編輯來自訂 AI 的行為：",
+                    "usage_tip": "💡 提示：編輯模組時會顯示預設內容作為參考",
+                    "inheritance_note": "⚠️ 注意：模組編輯會覆蓋對應的 YAML 模組內容"
+                }
+            },
+            "user_experience": {
+                "default_content": {
+                    "loaded": "✅ 已載入預設內容作為編輯基礎",
+                    "loading_failed": "⚠️ 載入預設內容失敗，將從空白開始",
+                    "effective_prompt_loaded": "📝 已載入當前有效的完整系統提示",
+                    "module_default_loaded": "📦 已載入 {module} 模組的預設內容"
+                },
+                "editing": {
+                    "based_on_current": "基於當前有效的系統提示進行編輯...",
+                    "based_on_default": "基於 {module} 模組的預設內容進行編輯...",
+                    "from_scratch": "請輸入新的內容..."
+                },
+                "guidance": {
+                    "first_time_edit": "🎯 首次編輯提示：您可以基於預設內容進行修改",
+                    "module_explanation": "💭 此模組負責：{description}",
+                    "inheritance_info": "🔗 此設定將影響：{scope}"
+                }
+            }
+        },
         "search_gif": {
             "name": "search_gif",
             "description": "搜尋 GIF",
@@ -504,18 +718,6 @@
                 "parse_success": "成功解析時間：{time_str} -> {parsed_time}",
                 "parse_failed": "時間解析失敗：{time_str}"
             }
-        }
-    },
-    "system": {
-        "chat_bot": {
-            "language": {
-                "answer_in": "Always answer in Traditional Chinese",
-                "style": "Appropriately use Chinese idioms or playful expressions",
-                "references": "使用 [標題](<URL>) 格式引用"
-            },
-            "responses": {
-                "processing": "繼續輸出中..."
-            }
         },
         "music": {
             "player": {
@@ -552,143 +754,6 @@
                 "processing_desc": "正在處理您的選擇，請稍候...",
                 "added": "✅ | 已添加到播放清單： {title}",
                 "error": "❌ | 選擇歌曲時發生錯誤"
-            }
-        },
-        "cot_ai": {
-            "description": "思維鏈推理 AI 系統",
-            "prompts": {
-                "system_prompt": "您是一位具有高級推理能力的專業 AI 助手。您的任務是提供詳細的逐步思考過程說明。對於每個步驟：\n\n1. 提供清楚、簡潔的標題來描述當前推理階段。\n2. 在內容部分詳細闡述您的思考過程。\n3. 決定是否繼續推理或提供最終答案。\n4. 決定下一個推理步驟使用基礎模型還是進階模型。\n\n回應格式：\n使用 JSON 格式，包含以下鍵值：'title'、'content'、'next_action'（值：'continue' 或 'final_answer'）、'model_selection'（值：'advanced'）\n\n關鍵指示：\n- 至少使用 5 個不同的推理步驟。\n- 承認您作為 AI 的限制，明確說明您能做什麼和不能做什麼。\n- 積極探索和評估替代答案或方法。\n- 批判性地評估您自己的推理；識別潛在的缺陷或偏見。\n- 重新檢視時，採用根本不同的方法或觀點。\n- 使用至少 3 種不同的方法來得出或驗證您的答案。\n- 在推理中融入相關的領域知識和最佳實踐。\n- 在適用時量化每個步驟和最終結論的確定性水平。\n- 考慮推理的潛在邊緣情況或例外。\n- 為排除替代假設提供清楚的理由。",
-                "user_prompt_template": "請使用逐步推理來分析這個問題：{question}"
-            },
-            "errors": {
-                "api_error": "API 請求錯誤：{error}",
-                "parsing_error": "回應解析錯誤：{error}",
-                "general_error": "處理請求時發生錯誤：{error}",
-                "model_not_available": "模型不可用：{error}",
-                "json_decode_error": "JSON 解碼錯誤：{error}"
-            }
-        },
-        "language_manager": {
-            "description": "語言管理系統",
-            "supported_languages": {
-                "zh_TW": "繁體中文",
-                "zh_CN": "简体中文",
-                "en_US": "English",
-                "ja_JP": "日本語"
-            },
-            "logs": {
-                "directory_not_found": "找不到語言目錄：{directory}",
-                "translation_load_error": "載入翻譯文件時出錯 {file_path}: {error}",
-                "config_read_error": "讀取語言設定時出錯: {error}",
-                "config_save_error": "保存語言設定時出錯: {error}",
-                "path_traversal_error": "無法繼續遍歷路徑 {path}, 當前結果不是字典: {result}",
-                "format_error": "格式化翻譯時出錯，缺少參數: {error}",
-                "translation_not_found": "未找到翻譯: {path}",
-                "translation_error": "翻譯文字時出錯: {error}"
-            }
-        },
-        "gif_tools": {
-            "description": "GIF 搜尋與管理工具",
-            "logs": {
-                "searching_gif": "搜尋 GIF: {query}",
-                "found_gif": "找到 GIF: {url}",
-                "api_error": "Tenor API 回應錯誤: {status_code}",
-                "search_error": "GIF 搜尋錯誤: {error}",
-                "get_url_error": "取得 GIF URL 時發生錯誤: {error}",
-                "empty_query_warning": "空的搜尋關鍵字"
-            }
-        },
-        "schedule": {
-            "description": "行程管理系統",
-            "format": {
-                "full_schedule_title": "**完整行程表:**",
-                "empty_schedule": "行程表是空的。",
-                "day_header": "**{day}:**",
-                "no_events": "沒有行程。",
-                "time_column": "時間",
-                "description_column": "說明",
-                "specific_time_title": "**{time} 的行程:**",
-                "no_events_found": "沒有找到該時間的行程。",
-                "next_event": "下一個行程：{time} - {description}",
-                "no_next_event": "沒有找到下一個行程。"
-            },
-            "errors": {
-                "yaml_parse_error": "YAML檔案解析錯誤：{error}"
-            }
-        },
-        "model_management": {
-            "description": "AI 模型管理系統",
-            "status": {
-                "processing": "正在處理模型操作...",
-                "loading": "正在載入模型...",
-                "unloading": "正在卸載模型...",
-                "completed": "模型操作完成"
-            },
-            "errors": {
-                "permission_denied": "您沒有權限執行此操作，僅限開發者使用。",
-                "model_not_found": "找不到指定的模型。",
-                "operation_failed": "模型操作失敗：{error}"
-            },
-            "userdata": {
-                "description": "用戶資料管理系統",
-                "status": {
-                    "processing": "正在分析用戶資料...",
-                    "completed": "用戶資料分析完成",
-                    "updating": "正在更新用戶資料...",
-                    "searching": "正在查詢用戶資料..."
-                },
-                "errors": {
-                    "no_data": "找不到用戶資料",
-                    "analysis_failed": "資料分析失敗：{error}",
-                    "update_failed": "更新用戶資料失敗：{error}",
-                    "ai_processing_failed": "AI 處理用戶資料時發生錯誤：{error}",
-                    "database_error": "資料庫操作錯誤：{error}",
-                    "invalid_user": "無效的用戶 ID",
-                    "permission_denied": "您沒有權限訪問此用戶的資料"
-                },
-                "logs": {
-                    "data_retrieved": "已檢索用戶 {user_id} 的資料",
-                    "data_updated": "已更新用戶 {user_id} 的資料",
-                    "data_created": "已為用戶 {user_id} 創建新資料",
-                    "ai_processing": "正在使用 AI 處理用戶資料更新",
-                    "operation_completed": "用戶資料操作完成"
-                }
-            }
-        },
-        "internet_search": {
-            "description": "網路搜尋系統",
-            "logs": {
-                "search_started": "開始搜尋：{query}",
-                "results_found": "找到 {count} 個搜尋結果",
-                "processing_url": "正在處理 URL：{url}",
-                "content_extracted": "已提取內容，長度：{length} 字元",
-                "image_search_started": "開始圖片搜尋：{query}",
-                "eat_search_started": "開始美食推薦搜尋：{keyword}"
-            }
-        },
-        "remind": {
-            "description": "提醒系統",
-            "time_format": {
-                "full_format": "{years}{months}{weeks}{days}{hours}{minutes}{seconds}",
-                "year_format": "{value}年",
-                "month_format": "{value}月",
-                "week_format": "{value}週",
-                "day_format": "{value}天",
-                "hour_format": "{value}小時",
-                "minute_format": "{value}分鐘",
-                "second_format": "{value}秒"
-            },
-            "errors": {
-                "parse_error": "時間解析錯誤：{error}",
-                "reminder_failed": "設定提醒失敗：{error}",
-                "invalid_time_unit": "無效的時間單位：{unit}",
-                "time_out_of_range": "時間超出有效範圍"
-            },
-            "logs": {
-                "reminder_set": "已為用戶 {user_id} 設定提醒：{duration} 後",
-                "reminder_triggered": "提醒已觸發：用戶 {user_id}",
-                "parse_success": "成功解析時間：{time_str} -> {parsed_time}",
-                "parse_failed": "時間解析失敗：{time_str}"
             }
         }
     }
